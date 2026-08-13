@@ -1,0 +1,649 @@
+
+
+use mentaldb;
+-- ============================================================
+-- USER TABLE Password@123
+-- ============================================================
+
+CREATE TABLE user (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+    username VARCHAR(255) NOT NULL UNIQUE,
+
+    password_hash VARCHAR(255) NOT NULL,
+
+    first_name VARCHAR(255) NOT NULL,
+
+    last_name VARCHAR(255),
+
+    gender VARCHAR(50),
+
+    age_bucket VARCHAR(50),
+    role VARCHAR(50),
+    created_at TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6)
+);
+
+
+-- ============================================================
+-- USER SETTINGS TABLE
+-- ============================================================
+
+CREATE TABLE user_settings (
+
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+    user_id BIGINT NOT NULL UNIQUE,
+
+    email_notification BOOLEAN DEFAULT TRUE,
+
+    reminder_enabled BOOLEAN DEFAULT TRUE,
+
+    reminder_frequency VARCHAR(50),
+
+    theme VARCHAR(50),
+
+    ai_insights_enabled BOOLEAN DEFAULT TRUE,
+
+    created_at TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+
+    updated_at TIMESTAMP(6),
+
+    CONSTRAINT fk_user_settings_user
+        FOREIGN KEY (user_id)
+        REFERENCES user(id)
+        ON DELETE CASCADE
+);
+
+
+-- ============================================================
+-- MOOD CHECK-IN TABLE
+-- ============================================================
+DROP TABLE mood_checkin;
+CREATE TABLE mood_checkin (
+
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+    user_id BIGINT NOT NULL,
+
+    mood_score INT NOT NULL,
+
+    notes VARCHAR(1000),
+
+    checkin_date DATE NOT NULL,
+
+    created_at TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+
+
+    CONSTRAINT uk_mood_user_date
+        UNIQUE(user_id, checkin_date),
+
+
+    CONSTRAINT fk_mood_user
+        FOREIGN KEY (user_id)
+        REFERENCES user(id)
+        ON DELETE CASCADE,
+
+
+    CONSTRAINT chk_mood_score
+        CHECK (mood_score BETWEEN 1 AND 10)
+);
+
+ALTER TABLE mentaldb.mood_checkin
+ADD COLUMN sleep_hours INT DEFAULT 0,
+ADD COLUMN energy_level INT DEFAULT 0;
+
+-- ============================================================
+-- ASSESSMENT RESULT TABLE
+-- ============================================================
+
+CREATE TABLE assessment_result (
+
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+
+    user_id BIGINT NOT NULL,
+
+
+    assessment_type VARCHAR(50) NOT NULL,
+
+
+    score INT NOT NULL,
+
+
+    severity_level VARCHAR(100),
+
+
+    recommendation VARCHAR(2000),
+
+
+    completed_at TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+
+
+    CONSTRAINT fk_assessment_user
+        FOREIGN KEY (user_id)
+        REFERENCES user(id)
+        ON DELETE CASCADE
+);
+
+
+-- ============================================================
+-- JOURNAL ENTRY TABLE
+-- ============================================================
+
+CREATE TABLE journal_entry (
+
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+
+    user_id BIGINT NOT NULL,
+
+
+    title VARCHAR(255) NOT NULL,
+
+
+    content TEXT NOT NULL,
+
+
+    sentiment VARCHAR(50),
+
+
+    emotion VARCHAR(50),
+
+
+    entry_date DATE,
+
+
+    created_at TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+
+
+    CONSTRAINT fk_journal_user
+        FOREIGN KEY (user_id)
+        REFERENCES user(id)
+        ON DELETE CASCADE
+);
+
+
+
+-- ============================================================
+-- EMERGENCY CONTACT TABLE
+-- ============================================================
+
+CREATE TABLE emergency_contact (
+
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
+
+    user_id BIGINT NOT NULL,
+
+
+    contact_name VARCHAR(255) NOT NULL,
+
+
+    relationship VARCHAR(100),
+
+
+    phone_number VARCHAR(50) NOT NULL,
+
+
+    email VARCHAR(255),
+
+
+    primary_contact BOOLEAN DEFAULT FALSE,
+
+
+    created_at TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+
+
+    CONSTRAINT fk_emergency_user
+        FOREIGN KEY (user_id)
+        REFERENCES user(id)
+        ON DELETE CASCADE
+);
+
+
+
+-- ============================================================
+-- INDEXES FOR PERFORMANCE
+-- ============================================================
+
+CREATE INDEX idx_mood_user
+ON mood_checkin(user_id);
+
+
+CREATE INDEX idx_assessment_user
+ON assessment_result(user_id);
+
+
+CREATE INDEX idx_journal_user
+ON journal_entry(user_id);
+
+
+CREATE INDEX idx_emergency_user
+ON emergency_contact(user_id);
+
+
+
+
+
+
+
+
+INSERT INTO user (
+    username,
+    password_hash,
+    first_name,
+    last_name,
+    gender,
+    age_bucket,
+    created_at
+) VALUES
+(
+    'john.doe',
+    '$2a$10$FpV4WQhLrV6v3l5v5S9Q5u4S4d2N0L7v4W4rQ5Jv8Tg5Y5lL9gH7W',
+    'John',
+    'Doe',
+    'Male',
+    'adult',
+    '2026-08-01 09:15:30'
+),
+(
+    'jane.smith',
+    '$2a$10$FpV4WQhLrV6v3l5v5S9Q5u4S4d2N0L7v4W4rQ5Jv8Tg5Y5lL9gH7W',
+    'Jane',
+    'Smith',
+    'Female',
+    'adult',
+    '2026-08-01 10:20:15'
+),
+(
+    'alex.johnson',
+    '$2a$10$FpV4WQhLrV6v3l5v5S9Q5u4S4d2N0L7v4W4rQ5Jv8Tg5Y5lL9gH7W',
+    'Alex',
+    'Johnson',
+    'Male',
+    'teen',
+    '2026-08-01 11:45:22'
+),
+(
+    'emma.wilson',
+    '$2a$10$FpV4WQhLrV6v3l5v5S9Q5u4S4d2N0L7v4W4rQ5Jv8Tg5Y5lL9gH7W',
+    'Emma',
+    'Wilson',
+    'Female',
+    'child',
+    '2026-08-01 13:05:10'
+),
+(
+    'michael.brown',
+    '$2a$10$FpV4WQhLrV6v3l5v5S9Q5u4S4d2N0L7v4W4rQ5Jv8Tg5Y5lL9gH7W',
+    'Michael',
+    'Brown',
+    'Male',
+    'elderly',
+    '2026-08-01 14:30:45'
+),
+(
+    'olivia.davis',
+    '$2a$10$FpV4WQhLrV6v3l5v5S9Q5u4S4d2N0L7v4W4rQ5Jv8Tg5Y5lL9gH7W',
+    'Olivia',
+    'Davis',
+    'Female',
+    'adult',
+    '2026-08-01 15:40:18'
+),
+(
+    'daniel.miller',
+    '$2a$10$FpV4WQhLrV6v3l5v5S9Q5u4S4d2N0L7v4W4rQ5Jv8Tg5Y5lL9gH7W',
+    'Daniel',
+    'Miller',
+    'Male',
+    'adult',
+    '2026-08-01 16:25:30'
+),
+(
+    'sophia.garcia',
+    '$2a$10$FpV4WQhLrV6v3l5v5S9Q5u4S4d2N0L7v4W4rQ5Jv8Tg5Y5lL9gH7W',
+    'Sophia',
+    'Garcia',
+    'Female',
+    'teen',
+    '2026-08-01 17:12:50'
+);
+
+
+-- ============================================================
+-- USERS
+-- Password: Password@123
+-- ============================================================
+use  mentaldb;
+-- ============================================================
+-- USER SETTINGS
+-- ============================================================
+
+INSERT INTO user_settings
+(
+user_id,
+email_notification,
+reminder_enabled,
+reminder_frequency,
+theme,
+ai_insights_enabled,
+created_at
+)
+VALUES
+
+(1,true,true,'DAILY','LIGHT',true,NOW()),
+
+(2,true,true,'WEEKLY','DARK',true,NOW()),
+
+(3,true,false,'NONE','LIGHT',true,NOW()),
+
+(4,true,true,'DAILY','LIGHT',false,NOW()),
+
+(5,false,true,'WEEKLY','DARK',true,NOW());
+
+
+
+-- ============================================================
+-- EMERGENCY CONTACTS
+-- ============================================================
+
+INSERT INTO emergency_contact
+(
+user_id,
+contact_name,
+relationship,
+phone_number,
+email,
+primary_contact,
+created_at
+)
+VALUES
+
+(
+1,
+'Mary Doe',
+'Spouse',
+'2145551001',
+'mary.doe@example.com',
+true,
+NOW()
+),
+
+(
+2,
+'Robert Smith',
+'Brother',
+'2145551002',
+'robert.smith@example.com',
+true,
+NOW()
+),
+
+(
+3,
+'David Johnson',
+'Father',
+'2145551003',
+'david.johnson@example.com',
+true,
+NOW()
+),
+
+(
+4,
+'Lisa Wilson',
+'Mother',
+'2145551004',
+'lisa.wilson@example.com',
+true,
+NOW()
+),
+
+(
+5,
+'Susan Brown',
+'Daughter',
+'2145551005',
+'susan.brown@example.com',
+true,
+NOW()
+);
+
+
+
+-- ============================================================
+-- MOOD CHECK INS
+-- ============================================================
+
+INSERT INTO mood_checkin
+(
+user_id,
+mood_score,
+notes,
+checkin_date,
+created_at
+)
+VALUES
+
+(1,8,'Productive day and completed planned tasks',
+'2026-08-01',NOW()),
+
+(1,7,'Busy day but maintained positive attitude',
+'2026-08-02',NOW()),
+
+
+(2,4,'Feeling stressed because of workload',
+'2026-08-01',NOW()),
+
+(2,5,'Improved after talking with family',
+'2026-08-02',NOW()),
+
+
+(3,6,'School work was challenging today',
+'2026-08-01',NOW()),
+
+(3,7,'Had a better day with friends',
+'2026-08-02',NOW()),
+
+
+(4,9,'Enjoyed activities with friends',
+'2026-08-01',NOW()),
+
+
+(5,6,'Feeling tired but hopeful',
+'2026-08-01',NOW());
+
+
+
+-- ============================================================
+-- ASSESSMENT RESULTS
+-- PHQ-9
+-- GAD-7
+-- PSS-10
+-- WHO-5
+-- ============================================================
+
+INSERT INTO assessment_result
+(
+user_id,
+assessment_type,
+score,
+severity_level,
+recommendation,
+completed_at
+)
+VALUES
+
+
+-- JOHN
+(
+1,
+'PHQ-9',
+3,
+'Minimal',
+'Continue healthy habits and regular exercise',
+NOW()
+),
+
+(
+1,
+'GAD-7',
+2,
+'Minimal',
+'Maintain relaxation practices',
+NOW()
+),
+
+(
+1,
+'WHO-5',
+82,
+'Excellent',
+'Continue current wellbeing activities',
+NOW()
+),
+
+
+-- JANE
+(
+2,
+'PHQ-9',
+15,
+'Moderately Severe',
+'Consider professional mental health support',
+NOW()
+),
+
+(
+2,
+'GAD-7',
+12,
+'Moderate',
+'Practice stress management techniques',
+NOW()
+),
+
+(
+2,
+'PSS-10',
+24,
+'High Stress',
+'Focus on coping strategies and support',
+NOW()
+),
+
+
+-- ALEX
+(
+3,
+'PHQ-9',
+7,
+'Mild',
+'Maintain social connection and activities',
+NOW()
+),
+
+(
+3,
+'GAD-7',
+5,
+'Mild',
+'Practice mindfulness exercises',
+NOW()
+),
+
+
+-- EMMA
+(
+4,
+'WHO-5',
+90,
+'Excellent',
+'Continue positive activities',
+NOW()
+),
+
+
+-- MICHAEL
+(
+5,
+'PSS-10',
+18,
+'Moderate Stress',
+'Maintain regular wellness routine',
+NOW()
+);
+
+
+
+-- ============================================================
+-- JOURNAL ENTRIES
+-- ============================================================
+
+INSERT INTO journal_entry
+(
+user_id,
+title,
+content,
+sentiment,
+emotion,
+entry_date,
+created_at
+)
+VALUES
+
+
+(
+1,
+'Great Day',
+'Completed my goals and spent quality time with family.',
+'POSITIVE',
+'HAPPY',
+'2026-08-01',
+NOW()
+),
+
+
+(
+2,
+'Stressful Week',
+'Feeling overwhelmed with responsibilities. Need better balance.',
+'NEGATIVE',
+'ANXIOUS',
+'2026-08-01',
+NOW()
+),
+
+
+(
+3,
+'School Reflection',
+'Today was challenging but I learned something new.',
+'NEUTRAL',
+'CALM',
+'2026-08-01',
+NOW()
+),
+
+
+(
+4,
+'Happy Moments',
+'Played with friends and enjoyed the day.',
+'POSITIVE',
+'JOYFUL',
+'2026-08-01',
+NOW()
+),
+
+
+(
+5,
+'Daily Thoughts',
+'Feeling grateful for family support.',
+'POSITIVE',
+'PEACEFUL',
+'2026-08-01',
+NOW()
+);
