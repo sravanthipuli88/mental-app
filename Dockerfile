@@ -1,18 +1,18 @@
 # ==============================
 # Build Stage
 # ==============================
-#FROM gradle:8.10-jdk21 AS build
+FROM gradle:8.10-jdk21 AS build
 
-#WORKDIR /app
+WORKDIR /app
 
-#COPY build.gradle settings.gradle ./
-#COPY gradle ./gradle
+COPY build.gradle settings.gradle ./
+COPY gradle ./gradle
 
-#RUN gradle dependencies --no-daemon
+RUN gradle dependencies --no-daemon
 
-#COPY src ./src
+COPY src ./src
 
-#RUN gradle clean bootJar --no-daemon
+RUN gradle clean bootJar --no-daemon
 
 
 # ==============================
