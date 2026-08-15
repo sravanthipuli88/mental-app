@@ -53,7 +53,7 @@ private final AIWellnessService service;
 
 	@PostMapping("/user/{userId}/summary")
 	public String explain(@PathVariable Long userId){
-	
+		System.out.println("inside AI Generated explanation -1 >>> explain");
 		return service.generateExplanation(userId);
 	}
 
