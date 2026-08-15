@@ -69,7 +69,8 @@ implementation("com.mysql:mysql-connector-j:9.7.0")
     
     //AI 
     
-     implementation 'org.springframework.ai:spring-ai-starter-model-ollama'
+     //implementation 'org.springframework.ai:spring-ai-starter-model-ollama'
+         implementation 'org.springframework.ai:spring-ai-starter-model-openai'
 }
 
 tasks.named('test') {

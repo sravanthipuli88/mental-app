@@ -51,10 +51,10 @@ private final AIWellnessService service;
  * @return
  */
 
-	@PostMapping("/assessment-explanation")
-	public String explain(@RequestBody AIRequest request){
+	@PostMapping("/user/{userId}/summary")
+	public String explain(@PathVariable Long userId){
 	
-		return service.generateExplanation(request);
+		return service.generateExplanation(userId);
 	}
 
 }

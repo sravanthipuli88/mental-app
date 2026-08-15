@@ -1,6 +1,7 @@
 package com.sco.mental.assessment.service;
 
 
+import com.sco.mental.ai.dto.AIRequest;
 import com.sco.mental.assessment.dto.*;
 import com.sco.mental.assessment.entity.*;
 import com.sco.mental.assessment.repository.*;
@@ -88,6 +89,66 @@ public List<AssessmentResponse> getAllAssessments(User user) {
             .map(this::toResponse)
             .toList();
 }
+
+
+// It is used in the AI controller
+
+public AIRequest getAssessmentRequestDetails(Long userId) {
+
+    Assessment phq9 = getLatestAssessment(userId, "PHQ9");
+    Assessment gad7 = getLatestAssessment(userId, "GAD7");
+    Assessment pss10 = getLatestAssessment(userId, "PSS10");
+    Assessment who5 = getLatestAssessment(userId, "WHO5");
+
+    return new AIRequest(
+
+            userId,
+
+            // PHQ-9
+            getScore(phq9),
+            getSeverity(phq9),
+
+            // GAD-7
+            getScore(gad7),
+            getSeverity(gad7),
+
+            // PSS-10
+            getScore(pss10),
+            getSeverity(pss10),
+
+            // WHO-5
+            getScore(who5),
+            getSeverity(who5)
+    );
+}
+
+
+private Assessment getLatestAssessment(
+        Long userId,
+        String type) {
+
+    return assessmentRepository
+            .findFirstByUserIdAndTypeOrderByCreatedAtDesc(
+                    userId,
+                    type
+            )
+            .orElse(null);
+}
+
+private Integer getScore(Assessment assessment) {
+
+    return assessment != null
+            ? assessment.getScore()
+            : null;
+}
+
+private String getSeverity(Assessment assessment) {
+
+    return assessment != null
+            ? assessment.getSeverity()
+            : null;
+}
+
 
 private AssessmentResponse toResponse(Assessment assessment) {
 
