@@ -26,7 +26,7 @@ public interface AssessmentRepository
     
     Optional<Assessment> findFirstByUserIdAndTypeOrderByCreatedAtDesc(
             Long userId,
-            String type
+            AssessmentType type
     );
 
 }

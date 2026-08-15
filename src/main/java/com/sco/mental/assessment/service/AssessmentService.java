@@ -95,10 +95,10 @@ public List<AssessmentResponse> getAllAssessments(User user) {
 
 public AIRequest getAssessmentRequestDetails(Long userId) {
 
-    Assessment phq9 = getLatestAssessment(userId, "PHQ9");
-    Assessment gad7 = getLatestAssessment(userId, "GAD7");
-    Assessment pss10 = getLatestAssessment(userId, "PSS10");
-    Assessment who5 = getLatestAssessment(userId, "WHO5");
+    Assessment phq9 = getLatestAssessment(userId, AssessmentType.PHQ9);
+    Assessment gad7 = getLatestAssessment(userId, AssessmentType.GAD7);
+    Assessment pss10 = getLatestAssessment(userId, AssessmentType.PSS10);
+    Assessment who5 = getLatestAssessment(userId, AssessmentType.WHO5);
 
     return new AIRequest(
 
@@ -125,7 +125,7 @@ public AIRequest getAssessmentRequestDetails(Long userId) {
 
 private Assessment getLatestAssessment(
         Long userId,
-        String type) {
+        AssessmentType type) {
 
     return assessmentRepository
             .findFirstByUserIdAndTypeOrderByCreatedAtDesc(
