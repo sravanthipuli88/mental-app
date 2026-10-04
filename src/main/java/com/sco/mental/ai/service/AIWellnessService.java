@@ -50,7 +50,7 @@ String prompt =promptBuilder.build(request);
 System.out.println("inside AI Generated explanation -2");
 response =chatClient.prompt().system(safetyGuard.systemPrompt()).user(prompt)
 .options(OpenAiChatOptions.builder()
-        .model("llama-3.3-70b-versatile")
+        .model("openai/gpt-oss-120b")
         .temperature(0.7)
         .build()).call().content();
 System.out.println("inside AI Generated explanation -3");
