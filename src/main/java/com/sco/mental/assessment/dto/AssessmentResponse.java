@@ -18,6 +18,8 @@ public record AssessmentResponse(
 
 
         String severity,
+        
+        Long userId,
 
 
         String interpretation,
