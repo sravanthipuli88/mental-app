@@ -72,7 +72,7 @@ public AssessmentResponse submit( User user, AssessmentRequest request){
         .interpretation(result.interpretation()).build();
 	Assessment saved = assessmentRepository.save(assessment);
 	
-	return new AssessmentResponse( saved.getId(),saved.getType(),saved.getScore(),saved.getSeverity(),saved.getUser().getId(), saved.getInterpretation(),saved.getCreatedAt());
+	return new AssessmentResponse( saved.getId(),saved.getType(),saved.getScore(),saved.getSeverity(),saved.getUser().getId(), saved.getUser().getUsername(), saved.getInterpretation(),saved.getCreatedAt());
 }
 
 public List<AssessmentResponse> getAllAssessments(User user) {
@@ -158,6 +158,7 @@ private AssessmentResponse toResponse(Assessment assessment) {
             assessment.getScore(),
             assessment.getSeverity(),
 		    assessment.getUser().getId(),
+		    assessment.getUser().getUsername(),
             assessment.getInterpretation(),
             assessment.getCreatedAt()
     );
