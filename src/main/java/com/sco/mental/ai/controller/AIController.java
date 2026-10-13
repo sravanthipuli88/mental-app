@@ -21,6 +21,8 @@ Ollama LLM
 import com.sco.mental.ai.service.AIWellnessService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import com.sco.mental.assessment.entity.AssessmentSummary;
+import java.util.List;
 
 
 @RestController
