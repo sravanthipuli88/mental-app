@@ -9,23 +9,12 @@ public record AssessmentResponse(
 
 
         Long assessmentId,
-
-
         AssessmentType type,
-
-
         Integer score,
-
-
         String severity,
-        
         Long userId,
-
-
+        String userName,
         String interpretation,
-
-
         LocalDateTime completedAt
-
 
 ) {}
