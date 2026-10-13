@@ -15,6 +15,7 @@ import org.springframework.ai.chat.client.ChatClient;
 
 import org.springframework.stereotype.Service;
 import org.springframework.ai.openai.OpenAiChatOptions;
+import java.util.List;
 
 
 
