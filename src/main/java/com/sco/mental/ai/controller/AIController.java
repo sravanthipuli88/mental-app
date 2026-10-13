@@ -56,5 +56,28 @@ private final AIWellnessService service;
 		System.out.println("inside AI Generated explanation -1 >>> explain");
 		return service.generateExplanation(userId);
 	}
+	
+	
+    // Get all assessments for a user, newest first
+    @GetMapping
+    public ResponseEntity<List<AssessmentSummary>> getAssessmentHistory(
+            @PathVariable Long userId) {
+
+        return ResponseEntity.ok(
+                assessmentService.getAssessmentHistory(userId));
+    }
+    
+    // Get the most recent assessment for a user
+    @GetMapping("/latest")
+    public ResponseEntity<AssessmentSummary> getLatestAssessment(
+            @PathVariable Long userId) {
+
+        AssessmentSummary assessment =
+                assessmentService.getLatestAssessment(userId);
+
+        return assessment != null
+                ? ResponseEntity.ok(assessment)
+                : ResponseEntity.notFound().build();
+    }
 
 }

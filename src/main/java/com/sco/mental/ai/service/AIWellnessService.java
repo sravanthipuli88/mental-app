@@ -68,5 +68,13 @@ return response;
 
 }
 
+public List<AssessmentSummary> getAssessmentHistory(Long userId) {
+    return repository.findByUserIdOrderByCreatedAtDesc(userId);
+}
+
+public AssessmentSummary getLatestAssessment(Long userId) {
+    return repository.findFirstByUserIdOrderByCreatedAtDesc(userId);
+}
+
 
 }
