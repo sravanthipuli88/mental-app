@@ -23,10 +23,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import com.sco.mental.assessment.entity.AssessmentSummary;
 import java.util.List;
+import org.springframework.http.ResponseEntity;
 
 
 @RestController
-@RequestMapping("/api/v1/ai")
+@RequestMapping("/api/v1/ai/summary")
 @RequiredArgsConstructor
 public class AIController {
 
@@ -53,33 +54,46 @@ private final AIWellnessService service;
  * @return
  */
 
-	@PostMapping("/user/{userId}/summary")
+	@PostMapping("/user/{userId}")
 	public String explain(@PathVariable Long userId){
 		System.out.println("inside AI Generated explanation -1 >>> explain");
 		return service.generateExplanation(userId);
 	}
 	
 	
-    // Get all assessments for a user, newest first
+	// All users' assessment records
     @GetMapping
-    public ResponseEntity<List<AssessmentSummary>> getAssessmentHistory(
-            @PathVariable Long userId) {
-
-        return ResponseEntity.ok(
-                assessmentService.getAssessmentHistory(userId));
+    public ResponseEntity<List<AssessmentSummary>> getAllAssessments() {
+        return ResponseEntity.ok(service.getAllAssessments());
     }
-    
-    // Get the most recent assessment for a user
-    @GetMapping("/latest")
-    public ResponseEntity<AssessmentSummary> getLatestAssessment(
+
+    // Assessment history for one user
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<AssessmentSummary>> getByUserId(
+            @PathVariable Long userId) {
+        return ResponseEntity.ok(service.getAssessmentHistory(userId));
+    }
+
+    // Latest assessment for one user
+    @GetMapping("/user/{userId}/latest")
+    public ResponseEntity<AssessmentSummary> getLatestByUserId(
             @PathVariable Long userId) {
 
-        AssessmentSummary assessment =
-                assessmentService.getLatestAssessment(userId);
+        AssessmentSummary result = service.getLatestAssessment(userId);
 
-        return assessment != null
-                ? ResponseEntity.ok(assessment)
+        return result != null
+                ? ResponseEntity.ok(result)
                 : ResponseEntity.notFound().build();
     }
 
+    // Latest assessment across all users
+    @GetMapping("/latest")
+    public ResponseEntity<AssessmentSummary> getLatestForAllUsers() {
+        AssessmentSummary result =
+                service.getLatestAssessmentForAllUsers();
+
+        return result != null
+                ? ResponseEntity.ok(result)
+                : ResponseEntity.notFound().build();
+    }
 }
