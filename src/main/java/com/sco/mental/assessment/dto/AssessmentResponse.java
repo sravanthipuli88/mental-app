@@ -13,7 +13,7 @@ public record AssessmentResponse(
         Integer score,
         String severity,
         Long userId,
-        String userName,
+        String username,
         String interpretation,
         LocalDateTime completedAt
 
