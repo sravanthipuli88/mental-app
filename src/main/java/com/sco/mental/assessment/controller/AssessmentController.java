@@ -107,7 +107,7 @@ public AssessmentResponse submit(@AuthenticationPrincipal User user,@RequestBody
 
 //@PreAuthorize("hasAnyRole('USER','ADMIN')")
 @GetMapping("/history")
-public List<AssessmentResponse> history(@AuthenticationPrincipal User user){
+public List<AssessmentUserDTO> history(@AuthenticationPrincipal User user){
 	System.out.println(" inside the controller");
 return service.getAllAssessments(user);
 }
