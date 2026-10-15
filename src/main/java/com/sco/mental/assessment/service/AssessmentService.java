@@ -75,19 +75,30 @@ public AssessmentResponse submit( User user, AssessmentRequest request){
 	return new AssessmentResponse( saved.getId(),saved.getType(),saved.getScore(),saved.getSeverity(),saved.getUser().getId(), saved.getUser().getUsername(), saved.getInterpretation(),saved.getCreatedAt());
 }
 
-public List<AssessmentResponse> getAllAssessments(User user) {
+public List<AssessmentUserDTO> getAllAssessments(User user) {
 
-    List<Assessment> assessments;
+	 List<AssessmentUserDTO> assessments;
 
-    if (user.getRole() == Role.ADMIN) {
-        assessments = assessmentRepository.findAllByOrderByCreatedAtDesc();
-    } else {
-        assessments = assessmentRepository.findByUserOrderByCreatedAtDesc(user);
-    }
-
-    return assessments.stream()
-            .map(this::toResponse)
-            .toList();
+	    if (user.getRole() == Role.ADMIN) {
+	        assessments = assessmentRepository.findAssessmentsWithUsername();
+	    } else {
+	       // assessments = assessmentRepository.findByUserOrderByCreatedAtDesc(user);
+	    	assessments=  assessmentRepository.findByUserOrderByCreatedAtDesc(user)
+	    	                .stream()
+	    	                .map(assessment -> new AssessmentUserDTO(
+	    	                        assessment.getId(),
+	    	                        assessment.getCreatedAt(),
+	    	                        assessment.getInterpretation(),
+	    	                        assessment.getScore(),
+	    	                        assessment.getSeverity(),
+	    	                        assessment.getType(),
+	    	                        assessment.getUser().getId(),
+	    	                        user.getUsername()
+	    	                ))
+	    	                .toList();
+	    }
+	    System.out.println(" inside before assessemnt stream");
+	    return assessments;
 }
 
 
