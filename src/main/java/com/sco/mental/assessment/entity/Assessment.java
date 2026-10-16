@@ -27,6 +27,7 @@ public class Assessment {
     @JoinColumn(name="user_id")
     private User user;
 
+    private Long aiId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable=false)
@@ -43,7 +44,7 @@ public class Assessment {
 
 
     private LocalDateTime createdAt;
-
+       
 
 
     @PrePersist

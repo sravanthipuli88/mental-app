@@ -115,19 +115,23 @@ public AIRequest getAssessmentRequestDetails(Long userId) {
 
             userId,
 
-            // PHQ-9
+         // PHQ-9
+            getAssessmentId(phq9),
             getScore(phq9),
             getSeverity(phq9),
 
             // GAD-7
+            getAssessmentId(gad7),
             getScore(gad7),
             getSeverity(gad7),
 
             // PSS-10
+            getAssessmentId(pss10),
             getScore(pss10),
             getSeverity(pss10),
 
             // WHO-5
+            getAssessmentId(who5),
             getScore(who5),
             getSeverity(who5)
     );
@@ -159,7 +163,12 @@ private String getSeverity(Assessment assessment) {
             ? assessment.getSeverity()
             : null;
 }
+private Long getAssessmentId(Assessment assessment) {
 
+    return assessment != null
+            ? assessment.getId()
+            : null;
+}
 
 private AssessmentResponse toResponse(Assessment assessment) {
 

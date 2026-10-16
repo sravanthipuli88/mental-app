@@ -5,25 +5,27 @@ import lombok.Builder;
 @Builder
 public record AIRequest(
 
-        Long userId,
+		 Long userId,
+	        
+	        Long phq9Id,
 
-        Integer phq9Score,
+	        Integer phq9Score,
 
-        String phq9Severity,
+	        String phq9Severity,
 
+	        Long gad7Id,
+	        Integer gad7Score,
 
-        Integer gad7Score,
+	        String gad7Severity,
 
-        String gad7Severity,
+	        Long pss10Id,
+	        Integer pss10Score,
 
+	        String pss10Severity,
 
-        Integer pss10Score,
+	        Long who5Id,
+	        Integer who5Score,
 
-        String pss10Severity,
-
-
-        Integer who5Score,
-
-        String who5Severity
+	        String who5Severity
 
 ) {}

@@ -5,6 +5,7 @@ import com.sco.mental.ai.dto.AIRequest;
 import com.sco.mental.ai.entity.AIConversation;
 import com.sco.mental.ai.repository.AIConversationRepository;
 import com.sco.mental.assessment.entity.AssessmentSummary;
+import com.sco.mental.assessment.repository.AssessmentRepository;
 import com.sco.mental.assessment.repository.AssessmentSummaryRepository;
 import com.sco.mental.assessment.service.AssessmentService;
 
@@ -36,6 +37,7 @@ private final SafetyGuardService safetyGuard;
 private final AssessmentSummaryRepository repository;
 
 private final AssessmentService assessmentService;
+private final AssessmentRepository assessmentRepository;
 
 
 
@@ -58,9 +60,14 @@ System.out.println("inside AI Generated explanation -3");
 
 AssessmentSummary summary =AssessmentSummary.builder().userId(request.userId()).phq9Score(request.phq9Score()).gad7Score(request.gad7Score()).pss10Score(request.pss10Score()).who5Score(request.who5Score()).aiSummary(response).build();
 
-//AIConversation history =AIConversation.builder().userId(userId).assessmentType(type).userPrompt(prompt).aiResponse(response).build();
-System.out.println("inside AI Generated explanation -4");
-repository.save(summary);
+AssessmentSummary savedSummary = repository.save(summary);
+Long aiId = savedSummary.getId();
+
+assessmentRepository.updateAssessmentAIId(userId,"PHQ9",request.phq9Id(),aiId);
+assessmentRepository.updateAssessmentAIId(userId,"GAD7",request.gad7Id(),aiId);
+assessmentRepository.updateAssessmentAIId(userId,"PSS10",request.pss10Id(),aiId);
+assessmentRepository.updateAssessmentAIId(userId,"WHO5",request.who5Id(),aiId);
+
 	}catch(Exception e) {
 		e.printStackTrace();
 	}
