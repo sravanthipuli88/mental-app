@@ -93,7 +93,8 @@ public List<AssessmentUserDTO> getAllAssessments(User user) {
 	    	                        assessment.getSeverity(),
 	    	                        assessment.getType(),
 	    	                        assessment.getUser().getId(),
-	    	                        user.getUsername()
+	    	                        user.getUsername(),
+	    	                        assessment.getAiId()
 	    	                ))
 	    	                .toList();
 	    }

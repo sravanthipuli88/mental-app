@@ -52,7 +52,8 @@ public interface AssessmentRepository
 	    	    	        a.severity,
 	    	    	        a.type,
 	    	    	        u.id, 
-	    	        u.username
+	    	        u.username,
+	    	        a.aiId
 	        	    )
 	    	    FROM Assessment a
 	    	    JOIN a.user u

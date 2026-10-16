@@ -14,6 +14,7 @@ public record AssessmentUserDTO(
         String severity,
         AssessmentType type,
         Long userId,
-        String username
+        String username,
+        Long aiId
 
 ) {}
