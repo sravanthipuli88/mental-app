@@ -24,7 +24,7 @@ public class InfisicalEnvironmentPostProcessor
         String projectId = required("INFISICAL_PROJECT_ID");
 
         String env = environment.getProperty(
-                "infisical.environment", "Development");
+                "infisical.environment", "dev");
 
         String path = environment.getProperty(
                 "infisical.secret-path", "/");
