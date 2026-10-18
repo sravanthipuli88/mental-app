@@ -33,6 +33,9 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
 
     annotationProcessor 'org.projectlombok:lombok'
+
+    //secret services
+     implementation 'com.infisical:sdk:3.0.8'
     
     // Web / REST
     implementation 'org.springframework.boot:spring-boot-starter-web'
