@@ -56,6 +56,11 @@ public class InfisicalEnvironmentPostProcessor
             properties.put(secret.getSecretKey(),
                            secret.getSecretValue());
         }
+             if (!properties.containsKey("AI_LLM_URL")) {
+    throw new IllegalStateException(
+        "AI_LLM_URL was not loaded from Infisical"
+    );
+}
 
         environment.getPropertySources().addFirst(
                 new MapPropertySource(
