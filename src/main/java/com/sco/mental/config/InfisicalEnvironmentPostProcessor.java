@@ -1,7 +1,7 @@
 package com.sco.mental.config;
 
 import com.infisical.sdk.InfisicalSdk;
-import com.infisical.sdk.SdkConfig;
+import com.infisical.sdk.config.SdkConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -18,7 +18,8 @@ public class InfisicalEnvironmentPostProcessor
             ConfigurableEnvironment environment,
             SpringApplication application) {
 
-        String clientId = required("INFISICAL_CLIENT_ID");
+     try {
+    	String clientId = required("INFISICAL_CLIENT_ID");
         String clientSecret = required("INFISICAL_CLIENT_SECRET");
         String projectId = required("INFISICAL_PROJECT_ID");
 
@@ -53,6 +54,9 @@ public class InfisicalEnvironmentPostProcessor
         environment.getPropertySources().addFirst(
                 new MapPropertySource(
                         "infisicalSecrets", properties));
+     }catch(Exception e) {
+        System.out.println(" reading secrets is issue");
+     }
     }
 
     private static String required(String name) {
