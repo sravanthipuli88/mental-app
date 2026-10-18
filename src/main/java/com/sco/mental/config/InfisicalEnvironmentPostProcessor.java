@@ -19,12 +19,17 @@ public class InfisicalEnvironmentPostProcessor
             SpringApplication application) {
 
      try {
-    	String clientId = required("INFISICAL_CLIENT_ID");
-        String clientSecret = required("INFISICAL_CLIENT_SECRET");
-        String projectId = required("INFISICAL_PROJECT_ID");
+    	 String clientId = environment.getProperty(
+                 "INFISICAL_CLIENT_ID");
+         
+         String clientSecret = environment.getProperty(
+                 "INFISICAL_CLIENT_SECRET");
+         
+         String projectId = environment.getProperty(
+                 "INFISICAL_PROJECT_ID");
 
-        String env = environment.getProperty(
-                "infisical.environment", "Development");
+         String env = environment.getProperty(
+                 "infisical.environment", "dev");
 
         String path = environment.getProperty(
                 "infisical.secret-path", "/");
@@ -58,14 +63,5 @@ public class InfisicalEnvironmentPostProcessor
      }catch(Exception e) {
         System.out.println(" reading secrets is issue");
      }
-    }
-
-    private static String required(String name) {
-        String value = System.getenv(name);
-        if (value == null || value.isBlank()) {
-            throw new IllegalStateException(
-                    "Missing required environment variable: " + name);
-        }
-        return value;
     }
 }
