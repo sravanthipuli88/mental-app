@@ -144,7 +144,7 @@ private Assessment getLatestAssessment(
         AssessmentType type) {
 
     return assessmentRepository
-            .findFirstByUserIdAndTypeOrderByCreatedAtDesc(
+            .findFirstByUserIdAndTypeAndAiIdIsNullOrderByCreatedAtDesc(
                     userId,
                     type
             )
