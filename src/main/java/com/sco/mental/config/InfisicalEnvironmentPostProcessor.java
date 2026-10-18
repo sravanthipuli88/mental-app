@@ -52,7 +52,7 @@ public class InfisicalEnvironmentPostProcessor
         Map<String, Object> properties = new HashMap<>();
 
         for (var secret : secrets) {
-        	 System.out.println("secret.getSecretKey() "+secret.getSecretKey()  +"secret.getSecretValue() "+secret.getSecretValue());
+        	 
             properties.put(secret.getSecretKey(),
                            secret.getSecretValue());
         }
