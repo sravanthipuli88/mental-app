@@ -35,7 +35,7 @@ public interface AssessmentRepository
 	    
 	    List<Assessment> findAllByOrderByCreatedAtDesc();
 	    
-	    Optional<Assessment> findFirstByUserIdAndTypeOrderByCreatedAtDesc(
+	    Optional<Assessment> findFirstByUserIdAndTypeAndAiIdIsNullOrderByCreatedAtDesc(
 	            Long userId,
 	            AssessmentType type
 	    );
