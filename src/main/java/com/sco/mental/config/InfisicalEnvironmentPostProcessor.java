@@ -24,7 +24,7 @@ public class InfisicalEnvironmentPostProcessor
         String projectId = required("INFISICAL_PROJECT_ID");
 
         String env = environment.getProperty(
-                "infisical.environment", "dev");
+                "infisical.environment", "Development");
 
         String path = environment.getProperty(
                 "infisical.secret-path", "/");
@@ -47,6 +47,7 @@ public class InfisicalEnvironmentPostProcessor
         Map<String, Object> properties = new HashMap<>();
 
         for (var secret : secrets) {
+        	 System.out.println("secret.getSecretKey() "+secret.getSecretKey()  +"secret.getSecretValue() "+secret.getSecretValue());
             properties.put(secret.getSecretKey(),
                            secret.getSecretValue());
         }
